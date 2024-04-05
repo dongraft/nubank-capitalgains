@@ -1,0 +1,1 @@
+from capital_gains.capital_gains import CapitalGains
