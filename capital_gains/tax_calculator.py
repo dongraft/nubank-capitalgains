@@ -21,8 +21,7 @@ class TaxCalculator:
         ) * operation.quantity
 
         self.loss_carry += profit
-
-        if profit < 0 or self.loss_carry < 0:
+        if self.loss_carry < 0:
             return Decimal(0)
 
         operation_profit = self.loss_carry
