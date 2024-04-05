@@ -10,7 +10,7 @@ class TaxCalculator:
     FREE_OF_TAX_AMOUNT = 20000
 
     def __init__(self):
-        self.profit_carry_over_loss: Decimal = Decimal(0)
+        self.loss_carry: Decimal = Decimal(0)
 
     def calculate_tax(self, operation: Operation, portfolio: Portfolio) -> Decimal:
         if operation.kind != SELL:
@@ -20,19 +20,16 @@ class TaxCalculator:
             operation.unit_cost - portfolio.get_weighted_average_price()
         ) * operation.quantity
 
-        if profit < 0:
-            self.profit_carry_over_loss += -profit
+        self.loss_carry += profit
+
+        if profit < 0 or self.loss_carry < 0:
             return Decimal(0)
 
-        profit_after_loss = profit - self.profit_carry_over_loss
-        if profit_after_loss < 0:
-            self.profit_carry_over_loss -= profit
-            return Decimal(0)
-
-        self.profit_carry_over_loss = Decimal(0)
+        operation_profit = self.loss_carry
+        self.loss_carry = Decimal(0)
 
         if operation.cost > self.FREE_OF_TAX_AMOUNT:
-            tax = profit_after_loss * self.TAX_PERCENTAGE
+            tax = operation_profit * self.TAX_PERCENTAGE
             return tax.quantize(Decimal("0.01"))
 
         return Decimal(0)
