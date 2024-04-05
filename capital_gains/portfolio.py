@@ -18,6 +18,9 @@ class Portfolio:
             self.weighted_average_price = (
                 previous_weighted_average_cost + operation.cost
             ) / self.current_stock_quantity
+            self.weighted_average_price = self.weighted_average_price.quantize(
+                Decimal("0.01")
+            )
         elif operation.kind == SELL:
             self.current_stock_quantity -= operation.quantity
 
