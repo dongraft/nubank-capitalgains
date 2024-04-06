@@ -24,7 +24,6 @@ class TaxCalculator:
         self.loss_carry = Decimal("0")
 
         if operation.cost > FREE_OF_TAX_AMOUNT:
-
             tax = operation_profit * TAX_PERCENTAGE
             return tax.quantize(Decimal("0.01"))
 
