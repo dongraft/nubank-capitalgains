@@ -4,9 +4,10 @@ from decimal import Decimal
 
 @dataclass
 class Operation:
-    kind: str
+    action: str
     unit_cost: Decimal
     quantity: int
+    tax: Decimal = None
 
     @property
     def cost(self):
