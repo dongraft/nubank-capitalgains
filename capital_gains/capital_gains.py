@@ -4,7 +4,6 @@ from decimal import Decimal
 
 from capital_gains.operation import Operation
 from capital_gains.portfolio import Portfolio
-from capital_gains.tax_calculator import TaxCalculator
 
 
 def format_taxes(taxes: list) -> list:

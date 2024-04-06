@@ -4,7 +4,6 @@ from unittest import TestCase
 from capital_gains.constants import BUY, SELL
 from capital_gains.operation import Operation
 from capital_gains.portfolio import Portfolio
-from capital_gains.tax_calculator import TaxCalculator
 
 
 class TaxCalculatorTest(TestCase):
