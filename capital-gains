@@ -1,0 +1,10 @@
+#!/bin/bash
+
+if [ "$1" == "test" ]; then
+    docker-compose run -T app python -m unittest
+    exit 1
+fi
+
+
+[ $# -ge 1 -a -f "$1" ] && input="$1" || input="-"
+cat $input | docker-compose run -T app python main.py
