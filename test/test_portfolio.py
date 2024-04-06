@@ -12,28 +12,28 @@ class PortfolioTest(TestCase):
 
     def test_stock_quantity_update(self):
         self.portfolio.update(
-            operation=Operation(kind=BUY, unit_cost=Decimal("10.00"), quantity=10)
+            operation=Operation(action=BUY, unit_cost=Decimal("10.00"), quantity=10)
         )
-        self.assertEqual(self.portfolio.current_stock_quantity, 10)
+        self.assertEqual(10, self.portfolio.current_stock_quantity)
         self.portfolio.update(
-            operation=Operation(kind=SELL, unit_cost=Decimal("10.00"), quantity=5)
+            operation=Operation(action=SELL, unit_cost=Decimal("10.00"), quantity=5)
         )
-        self.assertEqual(self.portfolio.current_stock_quantity, 5)
+        self.assertEqual(5, self.portfolio.current_stock_quantity)
         self.portfolio.update(
-            operation=Operation(kind=BUY, unit_cost=Decimal("10.00"), quantity=30)
+            operation=Operation(action=BUY, unit_cost=Decimal("10.00"), quantity=30)
         )
-        self.assertEqual(self.portfolio.current_stock_quantity, 35)
+        self.assertEqual(35, self.portfolio.current_stock_quantity)
 
     def test_weighted_average_price(self):
         self.portfolio.update(
-            operation=Operation(kind=BUY, unit_cost=Decimal("20.00"), quantity=20)
+            operation=Operation(action=BUY, unit_cost=Decimal("20.00"), quantity=20)
         )
-        self.assertEqual(self.portfolio.weighted_average_price, Decimal("20.00"))
+        self.assertEqual(Decimal("20.00"), self.portfolio.weighted_average_price)
         self.portfolio.update(
-            operation=Operation(kind=BUY, unit_cost=Decimal("40.00"), quantity=20)
+            operation=Operation(action=BUY, unit_cost=Decimal("40.00"), quantity=20)
         )
-        self.assertEqual(self.portfolio.weighted_average_price, Decimal("30.00"))
+        self.assertEqual(Decimal("30.00"), self.portfolio.weighted_average_price)
         self.portfolio.update(
-            operation=Operation(kind=BUY, unit_cost=Decimal("60.00"), quantity=20)
+            operation=Operation(action=BUY, unit_cost=Decimal("60.00"), quantity=20)
         )
-        self.assertEqual(self.portfolio.weighted_average_price, Decimal("40.00"))
+        self.assertEqual(Decimal("40.00"), self.portfolio.weighted_average_price)

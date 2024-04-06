@@ -1,6 +1,7 @@
 from unittest import TestCase
 
 from capital_gains import CapitalGains
+from capital_gains.capital_gains import calculate_taxes
 
 
 class CapitalGainsTest(TestCase):
@@ -15,7 +16,7 @@ class CapitalGainsTest(TestCase):
         ]
         expected = [{"tax": 0.00}, {"tax": 0.00}, {"tax": 0.00}]
 
-        current_taxes = self.capital_gains.calculate_taxes(operations_list=operations)
+        current_taxes = calculate_taxes(operations_list=operations)
         self.assertEqual(expected, current_taxes)
 
     def test_profit_with_tax_calculation(self):
@@ -24,7 +25,7 @@ class CapitalGainsTest(TestCase):
             {"operation": "sell", "unit-cost": 20.00, "quantity": 5000},
         ]
         expected = [{"tax": 0.00}, {"tax": 10000.00}]
-        current_taxes = self.capital_gains.calculate_taxes(operations_list=operations)
+        current_taxes = calculate_taxes(operations_list=operations)
         self.assertEqual(expected, current_taxes)
 
     def test_loss_with_no_tax(self):
@@ -33,5 +34,5 @@ class CapitalGainsTest(TestCase):
             {"operation": "sell", "unit-cost": 5.00, "quantity": 5000},
         ]
         expected = [{"tax": 0.00}, {"tax": 0.00}]
-        current_taxes = self.capital_gains.calculate_taxes(operations_list=operations)
+        current_taxes = calculate_taxes(operations_list=operations)
         self.assertEqual(expected, current_taxes)

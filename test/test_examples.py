@@ -2,6 +2,7 @@ import unittest
 from unittest import TestCase
 
 from capital_gains import CapitalGains
+from capital_gains.capital_gains import calculate_taxes
 
 
 class CapitalGainsExamplesTest(TestCase):
@@ -16,7 +17,7 @@ class CapitalGainsExamplesTest(TestCase):
         ]
         expected = [{"tax": 0.00}, {"tax": 0.00}, {"tax": 0.00}]
 
-        current_taxes = self.capital_gains.calculate_taxes(operations_list=operations)
+        current_taxes = calculate_taxes(operations_list=operations)
         self.assertEqual(expected, current_taxes)
 
     def test_case_2(self):
@@ -26,7 +27,7 @@ class CapitalGainsExamplesTest(TestCase):
             {"operation": "sell", "unit-cost": 5.00, "quantity": 5000},
         ]
         expected = [{"tax": 0.00}, {"tax": 10000.00}, {"tax": 0.00}]
-        current_taxes = self.capital_gains.calculate_taxes(operations_list=operations)
+        current_taxes = calculate_taxes(operations_list=operations)
         self.assertEqual(expected, current_taxes)
 
     def test_case_3(self):
@@ -36,7 +37,7 @@ class CapitalGainsExamplesTest(TestCase):
             {"operation": "sell", "unit-cost": 20.00, "quantity": 3000},
         ]
         expected = [{"tax": 0.00}, {"tax": 0.00}, {"tax": 1000.00}]
-        current_taxes = self.capital_gains.calculate_taxes(operations_list=operations)
+        current_taxes = calculate_taxes(operations_list=operations)
         self.assertEqual(expected, current_taxes)
 
     def test_case_4(self):
@@ -46,7 +47,7 @@ class CapitalGainsExamplesTest(TestCase):
             {"operation": "sell", "unit-cost": 15.00, "quantity": 10000},
         ]
         expected = [{"tax": 0.00}, {"tax": 0.00}, {"tax": 0.00}]
-        current_taxes = self.capital_gains.calculate_taxes(operations_list=operations)
+        current_taxes = calculate_taxes(operations_list=operations)
         self.assertEqual(expected, current_taxes)
 
     def test_case_5(self):
@@ -57,7 +58,7 @@ class CapitalGainsExamplesTest(TestCase):
             {"operation": "sell", "unit-cost": 25.00, "quantity": 5000},
         ]
         expected = [{"tax": 0.00}, {"tax": 0.00}, {"tax": 0.00}, {"tax": 10000.00}]
-        current_taxes = self.capital_gains.calculate_taxes(operations_list=operations)
+        current_taxes = calculate_taxes(operations_list=operations)
         self.assertEqual(expected, current_taxes)
 
     def test_case_6(self):
@@ -75,7 +76,7 @@ class CapitalGainsExamplesTest(TestCase):
             {"tax": 0.00},
             {"tax": 3000.00},
         ]
-        current_taxes = self.capital_gains.calculate_taxes(operations_list=operations)
+        current_taxes = calculate_taxes(operations_list=operations)
         self.assertEqual(expected, current_taxes)
 
     def test_case_7(self):
@@ -101,7 +102,7 @@ class CapitalGainsExamplesTest(TestCase):
             {"tax": 3700.00},
             {"tax": 0.00},
         ]
-        current_taxes = self.capital_gains.calculate_taxes(operations_list=operations)
+        current_taxes = calculate_taxes(operations_list=operations)
         self.assertEqual(expected, current_taxes)
 
     def test_case_8(self):
@@ -112,7 +113,7 @@ class CapitalGainsExamplesTest(TestCase):
             {"operation": "sell", "unit-cost": 50.00, "quantity": 10000},
         ]
         expected = [{"tax": 0.00}, {"tax": 80000.00}, {"tax": 0.00}, {"tax": 60000.00}]
-        current_taxes = self.capital_gains.calculate_taxes(operations_list=operations)
+        current_taxes = calculate_taxes(operations_list=operations)
         self.assertEqual(expected, current_taxes)
 
     def test_case_9(self):
@@ -136,7 +137,7 @@ class CapitalGainsExamplesTest(TestCase):
             {"tax": 2000.00},
             {"tax": 2400.00},
         ]
-        current_taxes = self.capital_gains.calculate_taxes(operations_list=operations)
+        current_taxes = calculate_taxes(operations_list=operations)
         self.assertEqual(expected, current_taxes)
 
 
