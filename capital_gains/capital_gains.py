@@ -4,6 +4,7 @@ from decimal import Decimal
 
 from capital_gains.operation import Operation
 from capital_gains.portfolio import Portfolio
+from capital_gains.tax_calculator import TaxCalculator
 
 
 def format_taxes(taxes: list) -> list:
@@ -12,6 +13,7 @@ def format_taxes(taxes: list) -> list:
 
 def calculate_taxes(operations_list: list):
     portfolio = Portfolio()
+    tax_calculator = TaxCalculator()
     operations = [
         Operation(
             action=operation_dict["operation"],
@@ -22,8 +24,12 @@ def calculate_taxes(operations_list: list):
     ]
     taxes = []
     for operation in operations:
-        res_operation = portfolio.update(operation)
-        taxes.append({"tax": res_operation.tax})
+        portfolio.update(operation)
+        tax = tax_calculator.calculate_tax(
+            operation=operation,
+            weighted_average_price=portfolio.get_weighted_average_price(),
+        )
+        taxes.append({"tax": tax})
     return format_taxes(taxes)
 
 

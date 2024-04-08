@@ -26,12 +26,5 @@ class Portfolio:
         elif operation.action == SELL:
             self.current_stock_quantity -= operation.quantity
 
-        tax = self.tax_calculator.calculate_tax(
-            operation=operation, weighted_average_price=self.weighted_average_price
-        )
-        return Operation(
-            action=operation.action,
-            unit_cost=operation.unit_cost,
-            quantity=operation.quantity,
-            tax=tax,
-        )
+    def get_weighted_average_price(self) -> Decimal:
+        return self.weighted_average_price
