@@ -7,7 +7,6 @@ class Operation:
     action: str
     unit_cost: Decimal
     quantity: int
-    tax: Decimal = None
 
     @property
     def cost(self):
