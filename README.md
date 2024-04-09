@@ -1,72 +1,80 @@
 # Nubank Code Challenge - Capital Gains
+
 ## Introduction
-Capital Gains is a CLI (Command Line Interface) that calculates how many taxes should be paid based on the history of
-transactions of two main operations: Selling and Buying stock.
+**Capital Gains** is a Command Line Interface (CLI) application that calculates the taxes due based on the transaction history of stock operations, specifically focusing on buying and selling activities.
 
 ## Implementation
+
 ### Rules
+- **Buying Stocks:**
+  - No taxes are incurred when stocks are purchased.
+  - The purchase cost is used to calculate the weighted average price of the stock holdings.
 
-    Buying Stocks:
-        When stocks are purchased, the transaction does not incur any taxes.
-        The cost of purchasing these stocks is used to calculate the weighted average price of the stock holdings.
+- **Selling Stocks:**
+  - May result in profit or loss, depending on the selling price relative to the weighted average price.
+  - Losses do not incur taxes and are carried forward to offset future profits.
 
-    Selling Stocks:
-        Selling stocks may result in either a profit or a loss, depending on the selling price compared to the weighted
-        average price.
-        No taxes are paid on losses. Instead, losses are carried forward to offset profits in future sell transactions.
+- **Weighted Average Price:**
+  - Represents the average cost of stocks held, recalculated with each purchase.
+  - Calculated as the total cost of stock purchases divided by the total number of stocks owned.
 
-    Weighted Average Price:
-        The weighted average price represents the average cost of stocks held, calculated each time stocks are bought.
-        It is computed as the total cost of all stock purchases divided by the total number of stocks owned.
+- **Carry-Over Loss:**
+  - Losses from selling stocks below the weighted average price accumulate.
+  - These losses reduce taxable profits from subsequent sales.
 
-    Carry-Over Loss:
-        Losses from selling stocks at a price lower than the weighted average price are accumulated.
-        These losses are then used to reduce taxable profits from future sales.
+- **Tax Calculation:**
+  - Taxes apply only to profits remaining after offsetting any accumulated losses.
+  - The tax rate is 20% on taxable profits.
+  - Sales totaling $20,000 or less incur no taxes, irrespective of the profit or loss situation.
 
-    Tax Calculation:
-        Taxes are only paid on profits that remain after offsetting any accumulated losses.
-        A 20% tax rate is applied to the taxable profits.
-        No taxes are due if the total sale amount (selling price times quantity) is $20,000 or less, regardless of the
-        profit or loss situation.
-
-    Portfolio Reset:
-        If all stocks in the portfolio are sold, the weighted average price resets.
-        Subsequent purchases of stock will establish a new weighted average price.
-
+- **Portfolio Reset:**
+  - The weighted average price resets when the entire stock portfolio is sold.
+  - New purchases establish a new average price.
 
 ### Codebase
-The code was written in Python. Divided by concerns:
-- `operation.py`- Container of `Operation` which saves the action, unit cost and quantity of a stock operation.
-   It also defines the total cost of an Operation as `quantity * unit_cost`.
-- `portfolio.py`- Defining `Portfolio`, it saves the number of stock and the weighted average price, updated everytime a
-   sell or buy action are performed.
-- `tax_calculator.py`- Home of the `TaxCalculator` class. It saves the loss carry amount defined everytime a tax is
-   calculated by `calculate_tax`, which receives an operation and a `weighted_average_price`.
+The application is written in Python, structured around specific concerns:
+- `operation.py`: Defines `Operation`, capturing the action, unit cost, and quantity of a stock operation. It also calculates the total cost as `quantity * unit_cost`.
+- `portfolio.py`: Manages the `Portfolio`, tracking stock quantities and updating the weighted average price for each buy or sell operation.
+- `tax_calculator.py`: Contains the `TaxCalculator` class, maintaining the loss carry amount, and providing `calculate_tax` to compute taxes based on operations and the portfolio's state.
 
-It proceeds as follows:
-- `main.py`- Executes the main application in a single call
-- `capital_gains.py` - Home for `calculate_taxes` function which will parse the stdin input into `Operation` elements,
-   update the portfolio with the operation and calculate the corresponding taxes everytime an event occurs.
+The workflow is as follows:
+- `main.py`: Executes the main application logic in a single call.
+- `capital_gains.py`: Houses the `calculate_taxes` function, which parses stdin input into `Operation` objects, updates the portfolio, and calculates taxes for each event.
 
-#### Testing
-Testing was done. Integration tests by defining the examples at the pdf sent. And unit testing the Portfolio and Tax
-Calculator.
-#### Notes
 
-The implementation tries to follow SOLID Principles, but for simplicity of the code, some principles were left out.
+### Testing
+The application was thoroughly tested, with integration tests based on scenarios from the provided PDF and unit tests for the Portfolio and Tax Calculator classes.
 
-For example, `TaxCalculator` could be implemented using a `TaxCalculationStratety` and `Portfolio`could have been an
-interface or abstract class
+### Notes
+The implementation aims to adhere to SOLID Principles. However, some principles were relaxed for code simplicity:
 
-#### Running the project
-The application uses a file as input from `stdin`
-In order to run in it, there are two ways:
-##### Just Python
-Any version of Python >= 3.7 should work.
+- `TaxCalculator` could utilize a `TaxCalculationStrategy` pattern.
+- `Portfolio` could be designed as an interface or abstract class.
 
-`python3 main.py < ../test.txt` should run the main code with a file input
-`python3 -m unittest` runs all the tests
-##### Docker
-If Docker is the preferred way, a simple script was made: `capital-gains`
-`./capital-gains < ../test.txt`uses a file input, while `./capital-gains test` runs all the tests.
+### Running the Project
+The application reads input from a file via `stdin`. It can be run using either plain Python or Docker:
+
+#### Using Python
+Compatible with Python >= 3.7.
+
+To execute the main application:
+```
+python3 main.py < ../test.txt
+```
+To run all tests, use the command:
+```
+python3 -m unittest
+```
+
+#### Using Docker
+When using Docker, a script `capital-gains` simplifies execution.
+
+To run with file input, use the command:
+```
+./capital-gains < ../test.txt
+```
+To execute tests, use the command:
+```
+./capital-gains test
+```
 The script is basically an alias for `docker-compose run`
