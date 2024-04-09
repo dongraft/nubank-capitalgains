@@ -43,13 +43,33 @@ The workflow is as follows:
 
 
 ### Testing
-The application was thoroughly tested, with integration tests based on scenarios from the provided PDF and unit tests for the Portfolio and Tax Calculator classes.
+The application was tested, with integration tests based on scenarios from the provided PDF and unit tests for the `Portfolio` and `TaxCalculator` classes.
 
 ### Notes
 The implementation aims to adhere to SOLID Principles. However, some principles were relaxed for code simplicity:
 
-- `TaxCalculator` could utilize a `TaxCalculationStrategy` pattern.
-- `Portfolio` could be designed as an interface or abstract class.
+- `TaxCalculator` could utilize a `TaxCalculationStrategy` pattern. (OCP). Something like this:
+```
+class TaxCalculationStrategy:
+    def calculate_tax(self, operation: Operation, portfolio: Portfolio) -> Decimal:
+        raise NotImplementedError
+
+class StandardTaxCalculationStrategy(TaxCalculationStrategy):
+    # Implementation of standard tax calculation
+```
+- `Portfolio` could be designed as an interface or abstract class. (DIP). As in this example:
+```
+class PortfolioInterface:
+    def get_weighted_average_price(self) -> Decimal:
+        raise NotImplementedError
+
+    def update(self, operation: Operation) -> None:
+        raise NotImplementedError
+
+class Portfolio(PortfolioInterface):
+    # Implementation of the PortfolioInterface
+
+```
 
 ### Running the Project
 The application reads input from a file via `stdin`. It can be run using either plain Python or Docker:
