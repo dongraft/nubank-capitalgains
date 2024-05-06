@@ -7,6 +7,7 @@ class Operation:
     action: str
     unit_cost: Decimal
     quantity: int
+    ticker: str
 
     @property
     def cost(self):

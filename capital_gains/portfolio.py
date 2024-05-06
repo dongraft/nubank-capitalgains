@@ -6,23 +6,46 @@ from capital_gains.operation import Operation
 
 class Portfolio:
     def __init__(self):
-        self.current_stock_quantity: int = 0
-        self.weighted_average_price: Decimal = Decimal("0")
+        self.tickers = {}
+        self.error_count = 0
 
-    def update(self, operation: Operation) -> Operation:
+    def init_ticker(self, ticker):
+        ticker_dict = {
+            "current_stock_quantity": 0,
+            "weighted_average_price": Decimal("0"),
+        }
+        self.tickers[ticker] = ticker_dict
+
+    def update(self, operation: Operation) -> None:
+        if operation.ticker not in self.tickers:
+            self.init_ticker(operation.ticker)
+
+        ticker_dict = self.tickers[operation.ticker]
+
+        if self.error_count > 2:
+            raise ValueError("Your account is blocked")
+
         if operation.action == BUY:
             previous_weighted_average_cost = (
-                self.current_stock_quantity * self.weighted_average_price
+                ticker_dict["current_stock_quantity"]
+                * ticker_dict["weighted_average_price"]
             )
-            self.current_stock_quantity += operation.quantity
-            self.weighted_average_price = (
+            ticker_dict["current_stock_quantity"] += operation.quantity
+            ticker_dict["weighted_average_price"] = (
                 previous_weighted_average_cost + operation.cost
-            ) / self.current_stock_quantity
-            self.weighted_average_price = self.weighted_average_price.quantize(
-                Decimal("0.01")
-            )
+            ) / ticker_dict["current_stock_quantity"]
+            ticker_dict["weighted_average_price"] = ticker_dict[
+                "weighted_average_price"
+            ].quantize(Decimal("0.01"))
         elif operation.action == SELL:
-            self.current_stock_quantity -= operation.quantity
+            if ticker_dict["current_stock_quantity"] < operation.quantity:
+                self.error_count += 1
+                raise ValueError("Can't sell more stocks than you have")
+            ticker_dict["current_stock_quantity"] -= operation.quantity
 
-    def get_weighted_average_price(self) -> Decimal:
-        return self.weighted_average_price
+        self.tickers[operation.ticker] = ticker_dict
+
+        self.error_count = 0
+
+    def get_weighted_average_price(self, ticker) -> Decimal:
+        return self.tickers[ticker]["weighted_average_price"]
